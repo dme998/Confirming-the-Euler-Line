@@ -1,0 +1,45 @@
+/* CLASSES: */
+public class Main {}
+ 
+class Coordinate
+{
+  public double x, y;
+}
+ 
+class Triangle
+{
+  public Coordinate point1, point2, point3;
+  public Coordinate centroid, circumcenter, orthocenter;
+}
+ 
+ 
+/* FUNCTIONS: */
+public static void main(...) {
+  //loop, Scanner, get 3 coordinates from user
+ 
+  Triangle myTriangle = new Triangle();
+  myTriangle = buildTriangle(point1, point2, point3);
+ 
+  printEulerLineInfo(myTriangle);
+}
+ 
+public static Coordinate promptUserForCoordinate();
+public static Triangle buildTriangle(Coordinate point1, Coordinate point2, Coordinate point3);
+public static void printEulerLineInfo(Triangle t);
+ 
+private static void pressToContinue() {
+    //System.out.println("Press Enter key to continue...");
+    try {
+        System.in.read();
+    }catch(Exception e) {}
+}
+ 
+ 
+/* HELPER FUNCTIONS called by buildTriangle().  Each result is temporarily stored as a local variable in buildTriangle() */
+public static Coordinate calculateCentroid(Coordinate point1, Coordinate point2, Coordinate point3);
+public static Coordinate calculateCircumcenter(Coordinate point1, Coordinate point2, Coordinate point3);
+public static Coordinate calculateOrthocenter(Coordinate point1, Coordinate point2, Coordinate point3);
+ 
+ 
+/* HELPER FUNCTION called by printEulerLineInfo() */
+public static double calculateDistancePercentageError(double distance, double length);

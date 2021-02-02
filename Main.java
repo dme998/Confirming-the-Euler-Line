@@ -56,7 +56,7 @@ class Triangle {
         System.out.print(message);
         while(!input.hasNextDouble()) {
             System.out.print("Invalid, try again: ");
-            input.next();
+            input.nextLine();
         }
         return input.nextDouble();
     }

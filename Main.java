@@ -51,7 +51,7 @@ class Triangle {
     Point A, B, C;
     Point centroid, circumcenter, orthocenter;
     
-    private static double getInputDouble(String message) {
+    private double getInputDouble(String message) {
         Scanner input = new Scanner(System.in);
         System.out.print(message);
         while(!input.hasNextDouble()) {
@@ -68,18 +68,18 @@ class Triangle {
         
         double x1 = getInputDouble("Enter first point X: ");
         double y1 = getInputDouble("Enter first point Y: ");
-        Point A = new Point(x1, y1);
-        System.out.println("Point A is " + A.toString());
+        A = new Point(x1, y1);
+        System.out.println("Point A is " + A);
     
         double x2 = getInputDouble("Enter second point X: ");
         double y2 = getInputDouble("Enter second point Y: ");
-        Point B = new Point(x1, y1);
-        System.out.println("Point B is " + B.toString());
+        B = new Point(x2, y2);
+        System.out.println("Point B is " + B);
         
         double x3 = getInputDouble("Enter third point X: ");
         double y3 = getInputDouble("Enter third point Y: ");
-        Point C = new Point(x3, y3);
-        System.out.println("Point C is " + C.toString());
+        C = new Point(x3, y3);
+        System.out.println("Point C is " + C);
 
         /* if collinear
             error message,

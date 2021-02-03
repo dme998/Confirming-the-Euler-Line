@@ -11,6 +11,9 @@ File Dependencies: none
 Created extra files: none
 Resources: Java Docs - https://docs.oracle.com/javase/8/docs/api/
 https://coderanch.com/t/668346/java/Catch-InputMismatchException-working
+https://byjus.com/maths/centroid-of-a-triangle/
+https://byjus.com/maths/orthocenter/
+https://byjus.com/maths/circumcenter-of-a-triangle/
  */
 
 import java.util.Scanner;
@@ -91,6 +94,11 @@ class Triangle {
             print absolute value of largest distance between special points,
             pause for enter then halt
          */
+         
+        orthocenter = calculateOrthocenter();
+        centroid = calculateCentroid();
+        circumcenter = calculateCircumcenter();
+         
 //        slowExit();
     }
 
@@ -100,6 +108,22 @@ class Triangle {
         System.out.println("Circumcenter: " + circumcenter);
 
     };
+    
+    private Point calculateOrthocenter() {
+        //TODO
+        return orthocenter;
+    }
+    
+    private Point calculateCentroid() {
+        /* (x1+x2+x3)/3 + (y1+y2+y3)/3 */
+        centroid = new Point(((A.getX() + B.getX() + C.getX()) / 3), ((A.getY() + B.getY() + C.getY()) / 3));
+        return centroid;
+    }
+    
+    private Point calculateCircumcenter() {
+        //TODO
+        return circumcenter;
+    }
 
     void distanceError() {
         /*

@@ -11,9 +11,6 @@ File Dependencies: none
 Created extra files: none
 Resources: Java Docs - https://docs.oracle.com/javase/8/docs/api/
 https://coderanch.com/t/668346/java/Catch-InputMismatchException-working
-https://byjus.com/maths/centroid-of-a-triangle/
-https://byjus.com/maths/orthocenter/
-https://byjus.com/maths/circumcenter-of-a-triangle/
  */
 
 import java.util.Scanner;
@@ -109,8 +106,56 @@ class Triangle {
 
     };
     
+    private double getSlope(double x1, double x2, double y1, double y2) {
+        /* calculates slope or sets to undefined (NaN) if denominator is 0 */
+        double m = (x2 - x1 != 0) ? (y2 - y1) / (x2 - x1) : Double.NaN;
+        System.out.println("Slope is " + m);
+        return m;
+    }
+    private double getPerpSlope(double m) {
+        /* calculates perpendicular slope */
+        double p = (m != 0) ? (-1 * 1 / m) : 0;
+        System.out.println("P-Slope is " + p);
+        return p;
+    }
+    private double getYIntercept(double m, double x, double y) {
+        /* calculates for b in the equation, y = mx + b */
+        double b = y - (m * x);
+        System.out.println("Y-int of " + x + "," + y + " with slope " + m + " is " + b);
+        return b;
+    }
+    
     private Point calculateOrthocenter() {
-        //TODO
+        /* get points to work with */
+        double ax = A.getX();  double ay = A.getY();
+        double bx = B.getX();  double by = B.getY();
+        double cx = C.getX();  double cy = C.getY();
+        
+        /* side AB */
+        double mAB = getSlope(ax, bx, ay, by);  //slope
+        double pAB = getPerpSlope(mAB);  //perpendicular slope
+        double bAB = getYIntercept(pAB, cx, cy);  //y-int
+        
+        /* side BC */
+        double mBC = getSlope(bx, cx, by, cy);  //slope
+        double pBC = getPerpSlope(mBC);  //perpendicular slope
+        double bBC = getYIntercept(pBC, ax, ay);  //y-int
+        
+        /* side AC */
+        double mAC = getSlope(ax, cx, ay, cy);  //slope        
+        double pAC = getPerpSlope(mAC);  //perpendicular slope
+        double bAC;  //y-int (not necessary unless another side is undefined)
+        
+        /* calculate the orthocenter point (x,y)
+         * set AB line equal to BC line and solve for x
+         * mABx + bAB == mBCx + bBC 
+         * then substitute newfound x and solve for y
+         * NaN checks are used to protect against divide by zero & undef errors
+         */
+        double ox = (pAB - pBC != 0) ? (bBC - bAB) / (pAB - pBC) : Double.NaN;
+        double oy = (!Double.isNaN(ox)) ? (pAB * ox) + bAB : Double.NaN;
+        
+        orthocenter = new Point(ox, oy);
         return orthocenter;
     }
     
@@ -146,3 +191,4 @@ class Triangle {
         }
     }
 }
+

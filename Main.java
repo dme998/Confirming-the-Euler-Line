@@ -85,6 +85,7 @@ class Triangle {
             error message,
             pause for enter then halt
          */
+        System.out.println("Collinear: " + collinear());
 //        slowExit();
 
         /* if equilateral
@@ -100,28 +101,28 @@ class Triangle {
     }
 
     void printSpecialPoints() {
-        System.out.println("Orthocenter: " + orthocenter);
-        System.out.println("Centroid: " + centroid);
-        System.out.println("Circumcenter: " + circumcenter);
+//        System.out.println("Orthocenter: " + orthocenter);
+//        System.out.println("Centroid: " + centroid);
+//        System.out.println("Circumcenter: " + circumcenter);
 
     };
     
     private double getSlope(double x1, double x2, double y1, double y2) {
         /* calculates slope or sets to undefined (NaN) if denominator is 0 */
         double m = (x2 - x1 != 0) ? (y2 - y1) / (x2 - x1) : Double.NaN;
-        System.out.println("Slope is " + m);
+//        System.out.println("Slope is " + m);
         return m;
     }
     private double getPerpSlope(double m) {
         /* calculates perpendicular slope */
         double p = (m != 0) ? (-1 * 1 / m) : 0;
-        System.out.println("P-Slope is " + p);
+//        System.out.println("P-Slope is " + p);
         return p;
     }
     private double getYIntercept(double m, double x, double y) {
         /* calculates for b in the equation, y = mx + b */
         double b = y - (m * x);
-        System.out.println("Y-int of " + x + "," + y + " with slope " + m + " is " + b);
+//        System.out.println("Y-int of " + x + "," + y + " with slope " + m + " is " + b);
         return b;
     }
     
@@ -180,6 +181,9 @@ class Triangle {
     }
 
     /* check collinear function */
+    boolean collinear() {
+        return false;
+    }
 
     /* check equilateral function */
 

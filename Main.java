@@ -94,8 +94,8 @@ class Triangle {
         B = b;
         C = c;
 
-//        System.out.println("Collinear: " + collinear() + ", " + type);
-        System.out.println("Equilateral: " + equilateral() + ", " + type);
+//        System.out.println("Collinear: " + isCollinear() + ", " + type);
+        System.out.println("Equilateral: " + isEquilateral() + ", " + type);
     }
     private double getInputDouble(String message) {
         Scanner input = new Scanner(System.in);
@@ -220,7 +220,7 @@ class Triangle {
     }
 
     /* check collinear function */
-    boolean collinear() {
+    boolean isCollinear() {
         boolean isCollinear = false;
 
         if ((A.X == B.X) && (C.X == A.X)) {
@@ -238,9 +238,11 @@ class Triangle {
     }
 
     /* check equilateral function */
-    boolean equilateral() {
-        boolean isEquilateral = false;
-        return isEquilateral;
+    boolean isEquilateral() {
+        /* by definition:
+            orthocenter and centroid are the same point on an equilateral triangle
+         */
+        return orthocenter == centroid;
     }
 
     private void slowExit() {

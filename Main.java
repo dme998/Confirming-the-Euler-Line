@@ -97,7 +97,8 @@ class Triangle {
         B = b;
         C = c;
 
-        System.out.println("Collinear: " + collinear() + ", " + type);
+//        System.out.println("Collinear: " + collinear() + ", " + type);
+        System.out.println("Equilateral: " + equilateral() + ", " + type);
     }
     private double getInputDouble(String message) {
         Scanner input = new Scanner(System.in);
@@ -245,6 +246,10 @@ class Triangle {
     }
 
     /* check equilateral function */
+    boolean equilateral() {
+        boolean isEquilateral = false;
+        return isEquilateral;
+    }
 
     private void slowExit() {
 //        System.out.println("Press Enter key to continue...");

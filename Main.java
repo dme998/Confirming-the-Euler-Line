@@ -20,8 +20,7 @@ public class Main {
         /* print description */
         testTriangles();
 
-//        Triangle myTriangle = new Triangle();
-
+        Triangle myTriangle = new Triangle();
         /* build triangle function */
 //        myTriangle.build();
 
@@ -92,10 +91,7 @@ class Triangle {
     Point A, B, C;
     Point centroid, circumcenter, orthocenter;
 
-    Triangle() {
-        // empty
-    }
-
+    Triangle() {}
     Triangle(Point a, Point b, Point c, String type) {
         A = a;
         B = b;
@@ -235,14 +231,14 @@ class Triangle {
         boolean isCollinear = false;
 
         if ((A.getX() == B.getX()) && (C.getX() == A.getX())) {
-            // vertical line
+            // vertical line: x1 = x2 = x3
             isCollinear = true;
         } else if ((A.getY() == B.getY()) && (C.getY() == A.getY())) {
-            // horizontal line
+            // horizontal line: y1 = y2 = y3
             isCollinear = true;
         } else {
             double m = (B.getY() - A.getY())/(B.getX() - A.getX());
-            // y2 - y1 = m(x2 - x1)
+            // sloped line: y2 - y1 = m(x2 - x1)
             isCollinear = (C.getY() - A.getY()) == m * (C.getX() - A.getX());
         }
         return isCollinear;

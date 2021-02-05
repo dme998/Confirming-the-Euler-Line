@@ -72,14 +72,11 @@ public class Main {
 }
 
 class Point {
-    private final double X, Y;
+    final double X, Y;
     Point(double x, double y) {
         this.X = x;
         this.Y = y;
     }
-
-    double getX() { return X; }
-    double getY() { return Y; }
 
     @Override
     public String toString() {
@@ -174,9 +171,9 @@ class Triangle {
     
     private Point calculateOrthocenter() {
         /* get points to work with */
-        double ax = A.getX();  double ay = A.getY();
-        double bx = B.getX();  double by = B.getY();
-        double cx = C.getX();  double cy = C.getY();
+        double ax = A.X;  double ay = A.Y;
+        double bx = B.X;  double by = B.Y;
+        double cx = C.X;  double cy = C.Y;
         
         /* side AB */
         double mAB = getSlope(ax, bx, ay, by);  //slope
@@ -208,7 +205,7 @@ class Triangle {
     
     private Point calculateCentroid() {
         /* (x1+x2+x3)/3 + (y1+y2+y3)/3 */
-        centroid = new Point(((A.getX() + B.getX() + C.getX()) / 3), ((A.getY() + B.getY() + C.getY()) / 3));
+        centroid = new Point(((A.X + B.X + C.X) / 3), ((A.Y + B.Y + C.Y) / 3));
         return centroid;
     }
     
@@ -230,16 +227,16 @@ class Triangle {
     boolean collinear() {
         boolean isCollinear = false;
 
-        if ((A.getX() == B.getX()) && (C.getX() == A.getX())) {
+        if ((A.X == B.X) && (C.X == A.X)) {
             // vertical line: x1 = x2 = x3
             isCollinear = true;
-        } else if ((A.getY() == B.getY()) && (C.getY() == A.getY())) {
+        } else if ((A.Y == B.Y) && (C.Y == A.Y)) {
             // horizontal line: y1 = y2 = y3
             isCollinear = true;
         } else {
-            double m = (B.getY() - A.getY())/(B.getX() - A.getX());
+            double m = (B.Y - A.Y)/(B.X - A.X);
             // sloped line: y2 - y1 = m(x2 - x1)
-            isCollinear = (C.getY() - A.getY()) == m * (C.getX() - A.getX());
+            isCollinear = (C.Y - A.Y) == m * (C.X - A.X);
         }
         return isCollinear;
     }
@@ -254,4 +251,3 @@ class Triangle {
         }
     }
 }
-

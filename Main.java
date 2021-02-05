@@ -239,10 +239,20 @@ class Triangle {
 
     /* check equilateral function */
     boolean isEquilateral() {
-        /* by definition:
-            orthocenter and centroid are the same point on an equilateral triangle
-         */
-        return orthocenter == centroid;
+        int abLen, acLen, bcLen;
+        abLen = (int)(AB.length * Math.pow(10,6));
+        acLen = (int)(AC.length * Math.pow(10,6));
+        bcLen = (int)(BC.length * Math.pow(10,6));
+        if (abLen % 10 > 5) {
+            abLen++;
+        }
+        if (acLen % 10 > 5) {
+            acLen++;
+        }
+        if (bcLen % 10 > 5) {
+            bcLen++;
+        }
+        return (abLen == acLen) && (acLen == bcLen);
     }
 
     private void slowExit() {

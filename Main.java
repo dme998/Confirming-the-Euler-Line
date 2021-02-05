@@ -84,15 +84,29 @@ class Point {
     }
 }
 
+class Side {
+    final Point point1, point2;
+    final double length;
+    Side(Point p1, Point p2){
+        point1 = p1;
+        point2 = p2;
+        length = Math.sqrt(Math.pow((point2.X - point1.X),2) + Math.pow((point2.Y - point1.Y),2));
+    }
+}
+
 class Triangle {
     Point A, B, C;
     Point centroid, circumcenter, orthocenter;
+    Side AB, AC, BC;
 
     Triangle() {}
     Triangle(Point a, Point b, Point c, String type) {
         A = a;
         B = b;
         C = c;
+        AB = new Side(A,B);
+        AC = new Side(A,C);
+        BC = new Side(B,C);
 
 //        System.out.println("Collinear: " + isCollinear() + ", " + type);
         System.out.println("Equilateral: " + isEquilateral() + ", " + type);

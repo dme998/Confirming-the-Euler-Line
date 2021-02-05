@@ -18,11 +18,11 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         /* print description */
-        testTriangles();
+//        testTriangles();
 
         Triangle myTriangle = new Triangle();
         /* build triangle function */
-//        myTriangle.build();
+        myTriangle.build();
 
         /* print special points function */
 //        myTriangle.printSpecialPoints();
@@ -151,43 +151,38 @@ class Triangle {
         System.out.println("Circumcenter: " + circumcenter);
     };
     
-    private double getSlope(double x1, double x2, double y1, double y2) {
+    private double getSlope(Point p1, Point p2) {
         /* calculates slope or sets to undefined (NaN) if denominator is 0 */
-        double m = (x2 - x1 != 0) ? (y2 - y1) / (x2 - x1) : Double.NaN;
+        double m = (p2.X - p1.X != 0) ? (p2.Y - p1.Y) / (p2.X - p1.X) : Double.NaN;
         System.out.println("Slope is " + m);
         return m;
     }
     private double getPerpSlope(double m) {
         /* calculates perpendicular slope */
-        double p = (m != 0) ? (-1 * 1 / m) : 0;
+        double p = (m != 0) ? (-1 / m) : 0;
         System.out.println("P-Slope is " + p);
         return p;
     }
-    private double getYIntercept(double m, double x, double y) {
+    private double getYIntercept(double m, Point p) {
         /* calculates for b in the equation, y = mx + b */
-        double b = y - (m * x);
-        System.out.println("Y-int of " + x + "," + y + " with slope " + m + " is " + b);
+        double b = p.Y - (m * p.X);
+        System.out.println("Y-int of " + p.X + "," + p.Y + " with slope " + m + " is " + b);
         return b;
     }
     
     private Point calculateOrthocenter() {
-        /* get points to work with */
-        double ax = A.X;  double ay = A.Y;
-        double bx = B.X;  double by = B.Y;
-        double cx = C.X;  double cy = C.Y;
-        
         /* side AB */
-        double mAB = getSlope(ax, bx, ay, by);  //slope
+        double mAB = getSlope(A, B);  //slope
         double pAB = getPerpSlope(mAB);  //perpendicular slope
-        double bAB = getYIntercept(pAB, cx, cy);  //y-int
+        double bAB = getYIntercept(pAB, C);  //y-int
         
         /* side BC */
-        double mBC = getSlope(bx, cx, by, cy);  //slope
+        double mBC = getSlope(B, C);  //slope
         double pBC = getPerpSlope(mBC);  //perpendicular slope
-        double bBC = getYIntercept(pBC, ax, ay);  //y-int
+        double bBC = getYIntercept(pBC, A);  //y-int
         
         /* side AC */
-        double mAC = getSlope(ax, cx, ay, cy);  //slope        
+        double mAC = getSlope(A, C);  //slope
         double pAC = getPerpSlope(mAC);  //perpendicular slope
         double bAC;  //y-int (not necessary unless another side is undefined)
         

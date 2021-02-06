@@ -6,7 +6,7 @@ Email: dme998@mail.umsl.edu, ptgxfv@mail.umsl.edu
 Course: CS 4500, Section 001
 Date: 02/08/2021
 File: Main.java
-Language: Java 8 (IDE: Java)
+Language: Java 8 (IDE: IntelliJ, onlinegdb.com)
 File Dependencies: none
 Created extra files: none
 Resources: Java Docs - https://docs.oracle.com/javase/8/docs/api/
@@ -18,17 +18,61 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         /* print description */
+
+        /* triangle construction */
 //        testTriangles();
+        Triangle myTriangle = new Triangle(getPoints());
 
-        Triangle myTriangle = new Triangle();
-        /* build triangle function */
-        myTriangle.build();
+        if (myTriangle.isCollinear()) {
+            /* check collinear */
+            System.out.println("Collinear message");
+            slowExit();
+        } else if (myTriangle.isEquilateral()) {
+            /* check equilateral */
+            /* print absolute value of largest distance between special points */
+            System.out.println("Equilateral message");
+            slowExit();
+        } else {
+            myTriangle.printSpecialPoints();
+            myTriangle.distanceError();
+        }
+    }
 
-        /* print special points function */
-//        myTriangle.printSpecialPoints();
+    static Point[] getPoints() {
+        double x1 = getInputDouble("Enter first point X: ");
+        double y1 = getInputDouble("Enter first point Y: ");
+        Point a = new Point(x1, y1);
+        System.out.println("Point A is " + a);
 
-        /* distance error function */
-//        myTriangle.distanceError();
+        double x2 = getInputDouble("Enter second point X: ");
+        double y2 = getInputDouble("Enter second point Y: ");
+        Point b = new Point(x2, y2);
+        System.out.println("Point B is " + b);
+
+        double x3 = getInputDouble("Enter third point X: ");
+        double y3 = getInputDouble("Enter third point Y: ");
+        Point c = new Point(x3, y3);
+        System.out.println("Point C is " + c);
+
+        return new Point[]{a,b,c};
+    }
+
+    static double getInputDouble(String message) {
+        Scanner input = new Scanner(System.in);
+        System.out.print(message);
+        while(!input.hasNextDouble()) {
+            System.out.print("Invalid, try again: ");
+            input.nextLine();
+        }
+        return input.nextDouble();
+    }
+
+    static void slowExit() {
+//        System.out.println("Press Enter key to continue...");
+        try {
+            System.in.read();
+        } catch (Exception ignored) {
+        }
     }
 
     static void testTriangles() {
@@ -110,6 +154,20 @@ class Triangle {
     Side AB, AC, BC;
 
     Triangle() {}
+    Triangle(Point[] triangle) {
+        A = triangle[0];
+        B = triangle[1];
+        C = triangle[2];
+        AB = new Side(A,B);
+        AC = new Side(A,C);
+        BC = new Side(B,C);
+
+        orthocenter = calculateOrthocenter();
+        centroid = calculateCentroid();
+        circumcenter = calculateCircumcenter();
+    }
+
+    // for use with testTriangles function
     Triangle(Point a, Point b, Point c, String type) {
         A = a;
         B = b;
@@ -120,61 +178,6 @@ class Triangle {
 
 //        System.out.println("Collinear: " + isCollinear() + ", " + type);
         System.out.println("Equilateral: " + isEquilateral() + ", " + type);
-    }
-
-    private double getInputDouble(String message) {
-        Scanner input = new Scanner(System.in);
-        System.out.print(message);
-        while(!input.hasNextDouble()) {
-            System.out.print("Invalid, try again: ");
-            input.nextLine();
-        }
-        return input.nextDouble();
-    }
-    
-    void build() {
-        /* prompt for A, B, C,
-            error message then re-prompt on invalid input
-         */
-
-        double x1 = getInputDouble("Enter first point X: ");
-        double y1 = getInputDouble("Enter first point Y: ");
-        A = new Point(x1, y1);
-        System.out.println("Point A is " + A);
-
-        double x2 = getInputDouble("Enter second point X: ");
-        double y2 = getInputDouble("Enter second point Y: ");
-        B = new Point(x2, y2);
-        System.out.println("Point B is " + B);
-
-        double x3 = getInputDouble("Enter third point X: ");
-        double y3 = getInputDouble("Enter third point Y: ");
-        C = new Point(x3, y3);
-        System.out.println("Point C is " + C);
-
-        /* if collinear
-            error message,
-            pause for enter then halt
-         */
-//        slowExit();
-
-        /* if equilateral
-            print absolute value of largest distance between special points,
-            pause for enter then halt
-         */
-//        slowExit();
-
-        AB = new Side(A,B);
-        AC = new Side(A,C);
-        BC = new Side(B,C);
-
-        orthocenter = calculateOrthocenter();
-        centroid = calculateCentroid();
-        circumcenter = calculateCircumcenter();
-
-        System.out.println("Orthocenter: " + orthocenter);
-        System.out.println("Circumcenter: " + circumcenter);
-
     }
 
     void printSpecialPoints() {
@@ -243,7 +246,7 @@ class Triangle {
          */
     }
 
-    /* check collinear function */
+    /* check collinear method */
     boolean isCollinear() {
         boolean isCollinear = false;
 
@@ -261,7 +264,7 @@ class Triangle {
         return isCollinear;
     }
 
-    /* check equilateral function */
+    /* check equilateral method */
     boolean isEquilateral() {
         int abLen, acLen, bcLen;
         abLen = (int)(AB.length * Math.pow(10,6));
@@ -277,13 +280,5 @@ class Triangle {
             bcLen++;
         }
         return (abLen == acLen) && (acLen == bcLen);
-    }
-
-    private void slowExit() {
-//        System.out.println("Press Enter key to continue...");
-        try {
-            System.in.read();
-        } catch (Exception ignored) {
-        }
     }
 }

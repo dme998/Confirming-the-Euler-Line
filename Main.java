@@ -187,16 +187,16 @@ class Triangle {
         double CF = C.Y - (AB.pSlope * C.X);
         double AD = A.Y - (BC.pSlope * A.X);
 
-        double ox, oy;
+        double OX, OY;
         if (AB.slope == 0) {
-            ox = C.X;
-            oy = BC.pSlope * (ox - A.X) + A.Y;
+            OX = C.X;
+            OY = BC.pSlope * (OX - A.X) + A.Y;
         } else if (BC.slope == 0) {
-            ox = A.X;
-            oy = AB.pSlope * (ox - C.X) + C.Y;
+            OX = A.X;
+            OY = AB.pSlope * (OX - C.X) + C.Y;
         } else {
-            ox = (AD - CF) == 0 ? 0 : (AD - CF) / (AB.pSlope - BC.pSlope);
-            oy = (AB.pSlope * ox) + CF;
+            OX = (AD - CF) == 0 ? 0 : (AD - CF) / (AB.pSlope - BC.pSlope);
+            OY = (AB.pSlope * OX) + CF;
         }
         /* calculate the orthocenter point (x,y)
          * set AB line equal to BC line and solve for x
@@ -205,7 +205,7 @@ class Triangle {
          * NaN checks are used to protect against divide by zero & undef errors
          */
 
-        return new Point(ox, oy);
+        return new Point(OX, OY);
     }
     
     private Point calculateCentroid() {
@@ -219,19 +219,19 @@ class Triangle {
 
         double FO = midAB.Y - (AB.pSlope * midAB.X);
         double DO = midBC.Y - (BC.pSlope * midBC.X);
-        double specialX, specialY;
+        double OX, OY;
 
         if (AB.slope == 0) {
-            specialX = midAB.X;
-            specialY = BC.pSlope * (specialX - midBC.X) + midBC.Y;
+            OX = midAB.X;
+            OY = BC.pSlope * (OX - midBC.X) + midBC.Y;
         } else if (BC.slope == 0) {
-            specialX = midBC.X;
-            specialY = AB.pSlope * (specialX - midAB.X) + midAB.Y;
+            OX = midBC.X;
+            OY = AB.pSlope * (OX - midAB.X) + midAB.Y;
         } else {
-            specialX = (DO - FO) == 0 ? 0 : (DO - FO) / (AB.pSlope - BC.pSlope);
-            specialY = AB.pSlope * (specialX - midAB.X) + midAB.Y;
+            OX = (DO - FO) == 0 ? 0 : (DO - FO) / (AB.pSlope - BC.pSlope);
+            OY = AB.pSlope * (OX - midAB.X) + midAB.Y;
         }
-        return new Point(specialX, specialY);
+        return new Point(OX, OY);
     }
 
     void distanceError() {

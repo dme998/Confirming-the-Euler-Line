@@ -218,7 +218,7 @@ class Triangle {
         Point midBC = new Point((B.X + C.X)/2,(B.Y + C.Y)/2);
 
         double FO = midAB.Y - (AB.pSlope * midAB.X);
-        double DO = midBC.Y - (AB.pSlope * midBC.Y);
+        double DO = midBC.Y - (BC.pSlope * midBC.X);
         double specialX, specialY;
 
         if (AB.slope == 0) {
@@ -228,9 +228,8 @@ class Triangle {
             specialX = midBC.X;
             specialY = AB.pSlope * (specialX - midAB.X) + midAB.Y;
         } else {
-            // to do
-            specialX = Double.NaN;
-            specialY = Double.NaN;
+            specialX = (DO - FO) == 0 ? 0 : (DO - FO) / (AB.pSlope - BC.pSlope);
+            specialY = AB.pSlope * (specialX - midAB.X) + midAB.Y;
         }
         return new Point(specialX, specialY);
     }

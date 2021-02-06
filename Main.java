@@ -173,6 +173,7 @@ class Triangle {
         circumcenter = calculateCircumcenter();
 
         System.out.println("Orthocenter: " + orthocenter);
+        System.out.println("Circumcenter: " + circumcenter);
 
     }
 
@@ -213,8 +214,25 @@ class Triangle {
     }
     
     private Point calculateCircumcenter() {
-        //TODO
-        return circumcenter;
+        Point midAB = new Point((A.X + B.X)/2,(A.Y + B.Y)/2);
+        Point midBC = new Point((B.X + C.X)/2,(B.Y + C.Y)/2);
+
+        double FO = midAB.Y - (AB.pSlope * midAB.X);
+        double DO = midBC.Y - (AB.pSlope * midBC.Y);
+        double specialX, specialY;
+
+        if (AB.slope == 0) {
+            specialX = midAB.X;
+            specialY = BC.pSlope * (specialX - midBC.X) + midBC.Y;
+        } else if (BC.slope == 0) {
+            specialX = midBC.X;
+            specialY = AB.pSlope * (specialX - midAB.X) + midAB.Y;
+        } else {
+            // to do
+            specialX = Double.NaN;
+            specialY = Double.NaN;
+        }
+        return new Point(specialX, specialY);
     }
 
     void distanceError() {

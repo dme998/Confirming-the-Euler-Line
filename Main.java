@@ -86,11 +86,21 @@ class Point {
 
 class Side {
     final Point point1, point2;
-    final double length;
+    final double length, slope, pSlope;
     Side(Point p1, Point p2){
         point1 = p1;
         point2 = p2;
         length = Math.sqrt(Math.pow((point2.X - point1.X),2) + Math.pow((point2.Y - point1.Y),2));
+        if (point1.X == point2.X) {
+            slope = Double.NaN;
+            pSlope = 0;
+        } else if (point1.Y == point2.Y) {
+            slope = 0;
+            pSlope = Double.NaN;
+        } else {
+            slope = (point2.Y - point1.Y) / (point2.X - point1.X);
+            pSlope = -1 / slope;
+        }
     }
 }
 
@@ -111,6 +121,7 @@ class Triangle {
 //        System.out.println("Collinear: " + isCollinear() + ", " + type);
         System.out.println("Equilateral: " + isEquilateral() + ", " + type);
     }
+
     private double getInputDouble(String message) {
         Scanner input = new Scanner(System.in);
         System.out.print(message);
@@ -153,9 +164,15 @@ class Triangle {
          */
 //        slowExit();
 
+        AB = new Side(A,B);
+        AC = new Side(A,C);
+        BC = new Side(B,C);
+
         orthocenter = calculateOrthocenter();
         centroid = calculateCentroid();
         circumcenter = calculateCircumcenter();
+
+        System.out.println("Orthocenter: " + orthocenter);
 
     }
 
@@ -164,59 +181,35 @@ class Triangle {
         System.out.println("Centroid: " + centroid);
         System.out.println("Circumcenter: " + circumcenter);
     };
-    
-    private double getSlope(Point p1, Point p2) {
-        /* calculates slope or sets to undefined (NaN) if denominator is 0 */
-        double m = (p2.X - p1.X != 0) ? (p2.Y - p1.Y) / (p2.X - p1.X) : Double.NaN;
-        System.out.println("Slope is " + m);
-        return m;
-    }
-    private double getPerpSlope(double m) {
-        /* calculates perpendicular slope */
-        double p = (m != 0) ? (-1 / m) : 0;
-        System.out.println("P-Slope is " + p);
-        return p;
-    }
-    private double getYIntercept(double m, Point p) {
-        /* calculates for b in the equation, y = mx + b */
-        double b = p.Y - (m * p.X);
-        System.out.println("Y-int of " + p.X + "," + p.Y + " with slope " + m + " is " + b);
-        return b;
-    }
-    
+
     private Point calculateOrthocenter() {
-        /* side AB */
-        double mAB = getSlope(A, B);  //slope
-        double pAB = getPerpSlope(mAB);  //perpendicular slope
-        double bAB = getYIntercept(pAB, C);  //y-int
-        
-        /* side BC */
-        double mBC = getSlope(B, C);  //slope
-        double pBC = getPerpSlope(mBC);  //perpendicular slope
-        double bBC = getYIntercept(pBC, A);  //y-int
-        
-        /* side AC */
-        double mAC = getSlope(A, C);  //slope
-        double pAC = getPerpSlope(mAC);  //perpendicular slope
-        double bAC;  //y-int (not necessary unless another side is undefined)
-        
+        double CF = C.Y - (AB.pSlope * C.X);
+        double AD = A.Y - (BC.pSlope * A.X);
+
+        double ox, oy;
+        if (AB.slope == 0) {
+            ox = C.X;
+            oy = BC.pSlope * (ox - A.X) + A.Y;
+        } else if (BC.slope == 0) {
+            ox = A.X;
+            oy = AB.pSlope * (ox - C.X) + C.Y;
+        } else {
+            ox = (AD - CF) == 0 ? 0 : (AD - CF) / (AB.pSlope - BC.pSlope);
+            oy = (AB.pSlope * ox) + CF;
+        }
         /* calculate the orthocenter point (x,y)
          * set AB line equal to BC line and solve for x
          * mABx + bAB == mBCx + bBC 
          * then substitute newfound x and solve for y
          * NaN checks are used to protect against divide by zero & undef errors
          */
-        double ox = (pAB - pBC != 0) ? (bBC - bAB) / (pAB - pBC) : Double.NaN;
-        double oy = (!Double.isNaN(ox)) ? (pAB * ox) + bAB : Double.NaN;
 
-        orthocenter = new Point(ox, oy);
-        return orthocenter;
+        return new Point(ox, oy);
     }
     
     private Point calculateCentroid() {
         /* (x1+x2+x3)/3 + (y1+y2+y3)/3 */
-        centroid = new Point(((A.X + B.X + C.X) / 3), ((A.Y + B.Y + C.Y) / 3));
-        return centroid;
+        return new Point(((A.X + B.X + C.X) / 3), ((A.Y + B.Y + C.Y) / 3));
     }
     
     private Point calculateCircumcenter() {

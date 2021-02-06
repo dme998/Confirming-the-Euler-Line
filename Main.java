@@ -13,6 +13,7 @@ Resources: Java Docs - https://docs.oracle.com/javase/8/docs/api/
 https://coderanch.com/t/668346/java/Catch-InputMismatchException-working
  */
 
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class Main {
@@ -27,15 +28,18 @@ public class Main {
             /* check collinear */
             System.out.println("Collinear message");
             slowExit();
-        } else if (myTriangle.isEquilateral()) {
+        }
+
+        myTriangle.printSpecialPoints();
+
+        if (myTriangle.isEquilateral()) {
             /* check equilateral */
             /* print absolute value of largest distance between special points */
             System.out.println("Equilateral message");
             slowExit();
-        } else {
-            myTriangle.printSpecialPoints();
-            myTriangle.distanceError();
         }
+
+        myTriangle.distanceError();
     }
 
     static Point[] getPoints() {
@@ -68,7 +72,7 @@ public class Main {
     }
 
     static void slowExit() {
-//        System.out.println("Press Enter key to continue...");
+        System.out.println("Press ENTER key to exit...");
         try {
             System.in.read();
         } catch (Exception ignored) {
@@ -124,7 +128,9 @@ class Point {
 
     @Override
     public String toString() {
-        return "(" + X + ", " + Y + ")";
+//        String.format("(%f,%f)",
+        return "(" + new DecimalFormat("#.##").format(X) +
+                ", " + new DecimalFormat("#.##").format(Y) + ")";
     }
 }
 
@@ -176,7 +182,7 @@ class Triangle {
         AC = new Side(A,C);
         BC = new Side(B,C);
 
-//        System.out.println("Collinear: " + isCollinear() + ", " + type);
+        System.out.println("Collinear: " + isCollinear() + ", " + type);
         System.out.println("Equilateral: " + isEquilateral() + ", " + type);
     }
 
@@ -187,8 +193,8 @@ class Triangle {
     };
 
     private Point calculateOrthocenter() {
-        double CF = C.Y - (AB.pSlope * C.X);
-        double AD = A.Y - (BC.pSlope * A.X);
+        double bCF = C.Y - (AB.pSlope * C.X);
+        double bAD = A.Y - (BC.pSlope * A.X);
 
         double OX, OY;
         if (AB.slope == 0) {
@@ -198,8 +204,8 @@ class Triangle {
             OX = A.X;
             OY = AB.pSlope * (OX - C.X) + C.Y;
         } else {
-            OX = (AD - CF) == 0 ? 0 : (AD - CF) / (AB.pSlope - BC.pSlope);
-            OY = (AB.pSlope * OX) + CF;
+            OX = (bAD - bCF) == 0 ? 0 : (bAD - bCF) / (AB.pSlope - BC.pSlope);
+            OY = (AB.pSlope * OX) + bCF;
         }
         /* calculate the orthocenter point (x,y)
          * set AB line equal to BC line and solve for x
@@ -220,8 +226,8 @@ class Triangle {
         Point midAB = new Point((A.X + B.X)/2,(A.Y + B.Y)/2);
         Point midBC = new Point((B.X + C.X)/2,(B.Y + C.Y)/2);
 
-        double FO = midAB.Y - (AB.pSlope * midAB.X);
-        double DO = midBC.Y - (BC.pSlope * midBC.X);
+        double bFO = midAB.Y - (AB.pSlope * midAB.X);
+        double bDO = midBC.Y - (BC.pSlope * midBC.X);
         double OX, OY;
 
         if (AB.slope == 0) {
@@ -231,7 +237,7 @@ class Triangle {
             OX = midBC.X;
             OY = AB.pSlope * (OX - midAB.X) + midAB.Y;
         } else {
-            OX = (DO - FO) == 0 ? 0 : (DO - FO) / (AB.pSlope - BC.pSlope);
+            OX = (bDO - bFO) == 0 ? 0 : (bDO - bFO) / (AB.pSlope - BC.pSlope);
             OY = AB.pSlope * (OX - midAB.X) + midAB.Y;
         }
         return new Point(OX, OY);
@@ -244,6 +250,25 @@ class Triangle {
          print D and percentage error,
          pause for enter then halt
          */
+        Side eulerLine = new Side(orthocenter, circumcenter);
+
+        double bEL = orthocenter.Y - (eulerLine.slope * orthocenter.X);
+        double bPL = centroid.Y - (eulerLine.pSlope * centroid.X);
+        double distance;
+
+        if (eulerLine.slope == 0) {
+            distance = Math.abs(centroid.Y - orthocenter.Y);
+        } else if (eulerLine.pSlope == 0) {
+            distance = Math.abs(centroid.X - orthocenter.X);
+        } else {
+            double EX = (bEL - bPL) / (eulerLine.pSlope - eulerLine.slope);
+            double EY = (eulerLine.slope * EX) + bEL;
+            distance = new Side(centroid, new Point(EX, EY)).length;
+        }
+
+        System.out.format("Distance D from Euler Line: %.9f\n", distance);
+        System.out.format("Percentage Error: %.2f\n", (distance * eulerLine.length * 100));
+
     }
 
     /* check collinear method */
@@ -267,9 +292,9 @@ class Triangle {
     /* check equilateral method */
     boolean isEquilateral() {
         int abLen, acLen, bcLen;
-        abLen = (int)(AB.length * Math.pow(10,6));
-        acLen = (int)(AC.length * Math.pow(10,6));
-        bcLen = (int)(BC.length * Math.pow(10,6));
+        abLen = (int)(AB.length * Math.pow(10,9));
+        acLen = (int)(AC.length * Math.pow(10,9));
+        bcLen = (int)(BC.length * Math.pow(10,9));
         if (abLen % 10 > 5) {
             abLen++;
         }

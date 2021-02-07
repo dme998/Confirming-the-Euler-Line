@@ -235,10 +235,11 @@ class Triangle {
             OX = A.X;
             OY = AB.pSlope * (OX - C.X) + C.Y;
         } else {
-            /* calculate the orthocenter point (OX,OY)
-             * set AB line equal to BC line and solve for x
-             * mABx + bAB == mBCx + bBC
-             * then substitute newfound x and solve for y
+            /*
+            calculate the orthocenter point (OX,OY)
+            set AB line equal to BC line and solve for x
+            mABx + bAB == mBCx + bBC
+            then substitute newfound x and solve for y
              */
             OX = (bAD - bCF) == 0 ? 0 : (bAD - bCF) / (AB.pSlope - BC.pSlope);
             OY = (AB.pSlope * OX) + bCF;
@@ -286,10 +287,11 @@ class Triangle {
             OX = midBC.X;
             OY = AB.pSlope * (OX - midAB.X) + midAB.Y;
         } else {
-            /* calculate the circumcenter point (OX,OY)
-             * set midAB line equal to midBC line and solve for x
-             * mABx + bAB == mBCx + bBC
-             * then substitute newfound x and solve for y
+            /*
+            calculate the circumcenter point (OX,OY)
+            set midAB line equal to midBC line and solve for x
+            mABx + bAB == mBCx + bBC
+            then substitute newfound x and solve for y
              */
             OX = (bDO - bFO) == 0 ? 0 : (bDO - bFO) / (AB.pSlope - BC.pSlope);
             OY = AB.pSlope * (OX - midAB.X) + midAB.Y;
@@ -318,8 +320,8 @@ class Triangle {
             distance = Math.abs(centroid.X - orthocenter.X);
         } else {
             /*
-                calculate point (EX,EY) that intersects both EL and PL,
-                this finds the closest distance from the EL to the centroid
+            calculate point (EX,EY) that intersects both EL and PL,
+            this finds the closest distance from the EL to the centroid
              */
             double EX = (bEL - bPL) / (eulerLine.pSlope - eulerLine.slope);
             double EY = (eulerLine.slope * EX) + bEL;

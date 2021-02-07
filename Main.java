@@ -320,10 +320,16 @@ class Triangle {
         double distance;
 
         if (eulerLine.slope == 0) {
-            // If EL slope is 0 then distance measured from difference of centroid and orthocenter Y values
+            /*
+            If EL is a straight line, distance measured from difference of centroid and orthocenter Y values
+            Note: orthocenter chosen arbitrarily, orthocenter and circumcenter have equal Y values
+             */
             distance = Math.abs(centroid.Y - orthocenter.Y);
         } else if (eulerLine.pSlope == 0) {
-            // If PL slope is 0 then distance measured from difference of centroid and orthocenter X values
+            /*
+            If PL is a straight line, distance measured from difference of centroid and orthocenter X values
+            Note: orthocenter chosen arbitrarily, orthocenter and circumcenter have equal X values
+             */
             distance = Math.abs(centroid.X - orthocenter.X);
         } else {
             /*
@@ -380,7 +386,10 @@ class Triangle {
         if (abLen % 10 > 5) abLen++;
         if (acLen % 10 > 5) acLen++;
         if (bcLen % 10 > 5) bcLen++;
-        
+        /*
+        Above code is an internal check for odd, irrational inputs
+         */
+
         return (abLen == acLen) && (acLen == bcLen);
     }
 

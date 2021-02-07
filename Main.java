@@ -25,7 +25,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         // Print description
-
+        System.out.println("This program will calculate the centers and euler line of a triangle."
+            + "\nSpecify three non-collinear 2D points.");
+        
         // Triangle construction
         Triangle myTriangle = new Triangle(getPoints());
 
@@ -75,7 +77,9 @@ public class Main {
         double y3 = getInputDouble("Enter third point Y: ");
         Point c = new Point(x3, y3);
 //        System.out.println("Point C is " + c);
-
+        
+        System.out.println("Given points: " + a + " " + b + " " + c);
+        
         return new Point[]{a,b,c};
     }
 

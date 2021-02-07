@@ -64,19 +64,16 @@ public class Main {
         double x1 = getInputDouble("Enter first point X: ");
         double y1 = getInputDouble("Enter first point Y: ");
         Point a = new Point(x1, y1);
-//        System.out.println("Point A is " + a);
 
         // assigns second point's x, y values to new Point
         double x2 = getInputDouble("Enter second point X: ");
         double y2 = getInputDouble("Enter second point Y: ");
         Point b = new Point(x2, y2);
-//        System.out.println("Point B is " + b);
 
         // assigns third point's x, y values to new Point
         double x3 = getInputDouble("Enter third point X: ");
         double y3 = getInputDouble("Enter third point Y: ");
         Point c = new Point(x3, y3);
-//        System.out.println("Point C is " + c);
         
         System.out.println("Given points: " + a + " " + b + " " + c);
         
@@ -337,8 +334,8 @@ class Triangle {
             double EY = (eulerLine.slope * EX) + bEL;
             distance = new Side(centroid, new Point(EX, EY)).length;
         }
-        return "Euler line passes through circumcenter and centroid. " + 
-                "\nDistance D from Euler Line: " +
+        return "Euler line constructed from the orthocenter and circumcenter. " +
+                "\nCentroid's Distance D from Euler Line: " +
                 new DecimalFormat("#.##").format(distance) +
                 "\nPercentage Error (Approx.): " +
                 new DecimalFormat("#.##").format((distance / eulerLine.length) * 100) +
@@ -403,6 +400,6 @@ class Triangle {
         if (maxDistance < twoThree.length) maxDistance = twoThree.length;
 
         return "Abs. value of biggest distance between special points: " +
-                new DecimalFormat("#.#########").format(maxDistance);
+                new DecimalFormat("#.######").format(maxDistance);
     }
 }

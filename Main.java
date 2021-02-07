@@ -1,18 +1,22 @@
 /*
  * Title: Confirming the Euler Line
  * Description: This program takes user 2D points and reports the Euler line from special points on a triangle.
- * Authors: Daniel Eggers, Peter Galloway
- * Email: dme998@mail.umsl.edu, ptgxfv@mail.umsl.edu
+ * Authors: Daniel Eggers <dme998@mail.umsl.edu>, Peter Galloway <ptgxfv@mail.umsl.edu> 
  * Course: CS 4500, Section 001
  * Date: 02/08/2021
  * File: Main.java
  * Language: Java 8 (IDE: IntelliJ, onlinegdb.com)
  * File Dependencies: none
  * Created extra files: none
+ *
  * Resources:
- * General - https://docs.oracle.com/javase/8/docs/api/
- * DecimalFormat - https://stackoverflow.com/a/4184015
- * slowExit method - https://coderanch.com/t/668346/java/Catch-InputMismatchException-working
+ * General:                     https://docs.oracle.com/javase/8/docs/api/
+ * DecimalFormat:               https://stackoverflow.com/a/4184015
+ * getInputDouble method:       https://coderanch.com/t/668346/java/Catch-InputMismatchException-working
+ * centroid calculation:        https://byjus.com/maths/centroid-of-a-triangle/
+ * orthocenter calculation:     https://byjus.com/maths/orthocenter/
+ * orthocenter calculation:     https://tutors.com/math-tutors/geometry-help/how-to-find-orthocenter-of-a-triangle
+ * circumcenter calculation:    https://byjus.com/maths/circumcenter-of-a-triangle/
  */
 
 import java.text.DecimalFormat;

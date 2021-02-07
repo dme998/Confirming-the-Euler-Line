@@ -23,7 +23,6 @@ public class Main {
         // Print description
 
         // Triangle construction
-//        testTriangles();
         Triangle myTriangle = new Triangle(getPoints());
 
         // Check collinear
@@ -102,45 +101,6 @@ public class Main {
         } catch (Exception ignored) {
         }
     }
-
-//    static void testTriangles() {
-//        Triangle right = new Triangle(
-//                new Point(0,0),
-//                new Point(0, 2),
-//                new Point(2,2),
-//                "right triangle"
-//        );
-//        Triangle isosceles = new Triangle(
-//                new Point(0,0),
-//                new Point(0, 2),
-//                new Point(1,1),
-//                "isosceles triangle"
-//        );
-//        Triangle equilateral = new Triangle(
-//                new Point(0,0),
-//                new Point(1, 0),
-//                new Point(0.5, (Math.sqrt(3))/2),
-//                "equilateral triangle"
-//        );
-//        Triangle verticalLine = new Triangle(
-//                new Point(0,0),
-//                new Point(0, 2),
-//                new Point(0,12),
-//                "vertical line"
-//        );
-//        Triangle horizontalLine = new Triangle(
-//                new Point(3,1),
-//                new Point(4, 1),
-//                new Point(6,1),
-//                "horizontal line"
-//        );
-//        Triangle slopedLine = new Triangle(
-//                new Point(0,0),
-//                new Point(1,1),
-//                new Point(2,2),
-//                "sloped line"
-//        );
-//    }
 }
 
 /**

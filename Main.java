@@ -333,7 +333,8 @@ class Triangle {
             double EY = (eulerLine.slope * EX) + bEL;
             distance = new Side(centroid, new Point(EX, EY)).length;
         }
-        return "Distance D from Euler Line: " +
+        return "Euler line passes through circumcenter and centroid. " + 
+                "\nDistance D from Euler Line: " +
                 new DecimalFormat("#.##").format(distance) +
                 "\nPercentage Error (Approx.): " +
                 new DecimalFormat("#.##").format((distance / eulerLine.length) * 100) +

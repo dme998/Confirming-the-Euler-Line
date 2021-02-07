@@ -1,4 +1,4 @@
-/*
+/**
 Title: Confirming the Euler Line
 Description: This program takes user 2D points and reports the Euler line from special points on a triangle.
 Authors: Daniel Eggers, Peter Galloway
@@ -9,8 +9,10 @@ File: Main.java
 Language: Java 8 (IDE: IntelliJ, onlinegdb.com)
 File Dependencies: none
 Created extra files: none
-Resources: Java Docs - https://docs.oracle.com/javase/8/docs/api/
-https://coderanch.com/t/668346/java/Catch-InputMismatchException-working
+Resources:
+General - https://docs.oracle.com/javase/8/docs/api/
+DecimalFormat - https://stackoverflow.com/a/4184015
+slowExit function - https://coderanch.com/t/668346/java/Catch-InputMismatchException-working
  */
 
 import java.text.DecimalFormat;
@@ -18,30 +20,37 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        /* print description */
+        /* Print description */
 
-        /* triangle construction */
+        /* Triangle construction */
 //        testTriangles();
         Triangle myTriangle = new Triangle(getPoints());
 
+        /* Check collinear */
         if (myTriangle.isCollinear()) {
-            /* check collinear */
             System.out.println("Collinear message");
-            slowExit();
+        } else {
+            /* Print special points */
+            myTriangle.printSpecialPoints();
+
+            /* Check equilateral */
+            if (myTriangle.isEquilateral()) {
+                System.out.println("Equilateral message");
+                /* Print absolute value of largest distance between special points */
+                System.out.println(myTriangle.absDistance());
+            } else {
+                /* Print distance error */
+                System.out.println(myTriangle.distanceError());
+            }
         }
-
-        myTriangle.printSpecialPoints();
-
-        if (myTriangle.isEquilateral()) {
-            /* check equilateral */
-            /* print absolute value of largest distance between special points */
-            System.out.println("Equilateral message");
-            slowExit();
-        }
-
-        myTriangle.distanceError();
+        // Pause for ENTER then exit */
+        slowExit();
     }
 
+    /**
+     * Calls getInputDouble function to receive input
+     * @return Array of Points representing a triangle
+     */
     static Point[] getPoints() {
         double x1 = getInputDouble("Enter first point X: ");
         double y1 = getInputDouble("Enter first point Y: ");
@@ -61,6 +70,12 @@ public class Main {
         return new Point[]{a,b,c};
     }
 
+    /**
+     * Prompts user to input points of a triangle
+     * Re-prompts on invalid input
+     * @param message String describing which Point should be entered
+     * @return Double value to be used as a coordinate value
+     */
     static double getInputDouble(String message) {
         Scanner input = new Scanner(System.in);
         System.out.print(message);
@@ -71,6 +86,9 @@ public class Main {
         return input.nextDouble();
     }
 
+    /**
+     * Waits for the user to press ENTER until exiting
+     */
     static void slowExit() {
         System.out.println("Press ENTER key to exit...");
         try {
@@ -79,46 +97,49 @@ public class Main {
         }
     }
 
-    static void testTriangles() {
-        Triangle right = new Triangle(
-                new Point(0,0),
-                new Point(0, 2),
-                new Point(2,2),
-                "right triangle"
-        );
-        Triangle isosceles = new Triangle(
-                new Point(0,0),
-                new Point(0, 2),
-                new Point(1,1),
-                "isosceles triangle"
-        );
-        Triangle equilateral = new Triangle(
-                new Point(0,0),
-                new Point(1, 0),
-                new Point(0.5, (Math.sqrt(3))/2),
-                "equilateral triangle"
-        );
-        Triangle verticalLine = new Triangle(
-                new Point(0,0),
-                new Point(0, 2),
-                new Point(0,12),
-                "vertical line"
-        );
-        Triangle horizontalLine = new Triangle(
-                new Point(3,1),
-                new Point(4, 1),
-                new Point(6,1),
-                "horizontal line"
-        );
-        Triangle slopedLine = new Triangle(
-                new Point(0,0),
-                new Point(1,1),
-                new Point(2,2),
-                "sloped line"
-        );
-    }
+//    static void testTriangles() {
+//        Triangle right = new Triangle(
+//                new Point(0,0),
+//                new Point(0, 2),
+//                new Point(2,2),
+//                "right triangle"
+//        );
+//        Triangle isosceles = new Triangle(
+//                new Point(0,0),
+//                new Point(0, 2),
+//                new Point(1,1),
+//                "isosceles triangle"
+//        );
+//        Triangle equilateral = new Triangle(
+//                new Point(0,0),
+//                new Point(1, 0),
+//                new Point(0.5, (Math.sqrt(3))/2),
+//                "equilateral triangle"
+//        );
+//        Triangle verticalLine = new Triangle(
+//                new Point(0,0),
+//                new Point(0, 2),
+//                new Point(0,12),
+//                "vertical line"
+//        );
+//        Triangle horizontalLine = new Triangle(
+//                new Point(3,1),
+//                new Point(4, 1),
+//                new Point(6,1),
+//                "horizontal line"
+//        );
+//        Triangle slopedLine = new Triangle(
+//                new Point(0,0),
+//                new Point(1,1),
+//                new Point(2,2),
+//                "sloped line"
+//        );
+//    }
 }
 
+/**
+ * Simple representation of a Point with two coordinate values
+ */
 class Point {
     final double X, Y;
     Point(double x, double y) {
@@ -126,6 +147,9 @@ class Point {
         this.Y = y;
     }
 
+    /**
+     * @return Formatted String to 2 decimal places
+     */
     @Override
     public String toString() {
 //        String.format("(%f,%f)",
@@ -134,32 +158,60 @@ class Point {
     }
 }
 
+/**
+ * Represents a side of a triangle, also used as a line segment
+ */
 class Side {
     final Point point1, point2;
     final double length, slope, pSlope;
+
+    /**
+     * Assists in calculating special points
+     * Finding slope and perpendicular slope is important
+     * @param p1 First point of triangle side or line segment
+     * @param p2 Second point of triangle side or line segment
+     */
     Side(Point p1, Point p2){
         point1 = p1;
         point2 = p2;
         length = Math.sqrt(Math.pow((point2.X - point1.X),2) + Math.pow((point2.Y - point1.Y),2));
         if (point1.X == point2.X) {
+            /*
+            if X values are equal this is a vertical line,
+            this means the perpendicular slope will be horizontal
+             */
             slope = Double.NaN;
             pSlope = 0;
         } else if (point1.Y == point2.Y) {
+            /*
+            if Y values are equal this is a horizontal line,
+            this means the perpendicular slope will be vertical
+             */
             slope = 0;
             pSlope = Double.NaN;
         } else {
+            /*
+            vertical and horizontal lines have been dealt with already,
+            only sloped lines reach this point
+             */
             slope = (point2.Y - point1.Y) / (point2.X - point1.X);
             pSlope = -1 / slope;
         }
     }
 }
 
+/**
+ * Contains three Points, special points, and Sides
+ */
 class Triangle {
     Point A, B, C;
     Point centroid, circumcenter, orthocenter;
     Side AB, AC, BC;
 
-    Triangle() {}
+    /**
+     * Assigns all Triangle member variables
+     * @param triangle Array of points, size 3
+     */
     Triangle(Point[] triangle) {
         A = triangle[0];
         B = triangle[1];
@@ -173,25 +225,32 @@ class Triangle {
         circumcenter = calculateCircumcenter();
     }
 
-    // for use with testTriangles function
-    Triangle(Point a, Point b, Point c, String type) {
-        A = a;
-        B = b;
-        C = c;
-        AB = new Side(A,B);
-        AC = new Side(A,C);
-        BC = new Side(B,C);
+//    for use with testTriangles function
+//    Triangle(Point a, Point b, Point c, String type) {
+//        A = a;
+//        B = b;
+//        C = c;
+//        AB = new Side(A,B);
+//        AC = new Side(A,C);
+//        BC = new Side(B,C);
+//
+//        System.out.println("Collinear: " + isCollinear() + ", " + type);
+//        System.out.println("Equilateral: " + isEquilateral() + ", " + type);
+//    }
 
-        System.out.println("Collinear: " + isCollinear() + ", " + type);
-        System.out.println("Equilateral: " + isEquilateral() + ", " + type);
-    }
-
+    /**
+     * Prints the three special points of a triangle
+     */
     void printSpecialPoints() {
         System.out.println("Orthocenter: " + orthocenter);
         System.out.println("Centroid: " + centroid);
         System.out.println("Circumcenter: " + circumcenter);
-    };
+    }
 
+    /**
+     * Calculates the orthocenter of the triangle
+     * @return Point object of orthocenter
+     */
     private Point calculateOrthocenter() {
         double bCF = C.Y - (AB.pSlope * C.X);
         double bAD = A.Y - (BC.pSlope * A.X);
@@ -216,12 +275,20 @@ class Triangle {
 
         return new Point(OX, OY);
     }
-    
+
+    /**
+     * Calculates the centroid of the triangle
+     * @return Point object of centroid
+     */
     private Point calculateCentroid() {
         /* (x1+x2+x3)/3 + (y1+y2+y3)/3 */
         return new Point(((A.X + B.X + C.X) / 3), ((A.Y + B.Y + C.Y) / 3));
     }
-    
+
+    /**
+     * Calculates the circumcenter of the triangle
+     * @return Point object of circumcenter
+     */
     private Point calculateCircumcenter() {
         Point midAB = new Point((A.X + B.X)/2,(A.Y + B.Y)/2);
         Point midBC = new Point((B.X + C.X)/2,(B.Y + C.Y)/2);
@@ -243,7 +310,11 @@ class Triangle {
         return new Point(OX, OY);
     }
 
-    void distanceError() {
+    /**
+     * Finds the distance from centroid to the Euler Line
+     * @return Two Strings: distance, and rounding percentage error
+     */
+    String distanceError() {
         /*
          calculate euler line from two special points,
          measure distance D from third center,
@@ -266,12 +337,17 @@ class Triangle {
             distance = new Side(centroid, new Point(EX, EY)).length;
         }
 
-        System.out.format("Distance D from Euler Line: %.9f\n", distance);
-        System.out.format("Percentage Error: %.2f\n", (distance * eulerLine.length * 100));
-
+        return "Distance D from Euler Line: " +
+                new DecimalFormat("#.##").format(distance) +
+                "\nPercentage Error: " +
+                new DecimalFormat("#.##").format(distance * eulerLine.length * 100) +
+                "%";
     }
 
-    /* check collinear method */
+    /**
+     * Checks whether the Points given represent a triangle or a straight line
+     * @return boolean
+     */
     boolean isCollinear() {
         boolean isCollinear = false;
 
@@ -289,7 +365,10 @@ class Triangle {
         return isCollinear;
     }
 
-    /* check equilateral method */
+    /**
+     * Checks whether the triangle is an Equilateral triangle
+     * @return boolean
+     */
     boolean isEquilateral() {
         int abLen, acLen, bcLen;
         abLen = (int)(AB.length * Math.pow(10,9));
@@ -305,5 +384,15 @@ class Triangle {
             bcLen++;
         }
         return (abLen == acLen) && (acLen == bcLen);
+    }
+
+    /**
+     * Finds the biggest distance between special points
+     * @return Formatted String
+     */
+    String absDistance() {
+        double maxDistance = -99;
+        return "Abs. value of biggest distance between special points: " +
+                new DecimalFormat("#.##").format(maxDistance);
     }
 }

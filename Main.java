@@ -31,14 +31,16 @@ public class Main {
 
         // Check collinear
         if (myTriangle.isCollinear()) {
-            System.out.println("Collinear message");
+            System.out.println("The given points are collinear.");
         } else {
+            System.out.println("\nResults: ");
+            
             // Print special points
             myTriangle.printSpecialPoints();
 
             // Check equilateral
             if (myTriangle.isEquilateral()) {
-                System.out.println("Equilateral message");
+                System.out.println("The given points form an equilateral triangle.");
                 // Print absolute value of largest distance between special points
                 System.out.println(myTriangle.absDistance());
             } else {
@@ -365,16 +367,18 @@ class Triangle {
      * @return Are all sides of equal length?
      */
     boolean isEquilateral() {
-        // compares side lengths up to 8 decimal places for equality
-        int abLen = (int)(AB.length * Math.pow(10,8));
-        int acLen = (int)(AC.length * Math.pow(10,8));
-        int bcLen = (int)(BC.length * Math.pow(10,8));
-
-        // if the 9th digit is above 5, round it up (8th decimal)
+        final int rd = 2;  //number of decimal places to round 
+        
+        // compares side lengths up to rd decimal places for equality
+        int abLen = (int)(AB.length * Math.pow(10,rd));
+        int acLen = (int)(AC.length * Math.pow(10,rd));
+        int bcLen = (int)(BC.length * Math.pow(10,rd));
+        
+        // if the rdth digit is above 5, round it up 
         if (abLen % 10 > 5) abLen++;
         if (acLen % 10 > 5) acLen++;
         if (bcLen % 10 > 5) bcLen++;
-
+        
         return (abLen == acLen) && (acLen == bcLen);
     }
 
